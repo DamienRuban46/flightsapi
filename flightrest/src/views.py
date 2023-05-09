@@ -16,6 +16,6 @@ class ReservationViewSet(viewsets.ModelViewSet):
     query = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
-class ReservationViewSet(viewsets.ModelViewSet):
-    query = Reservation.objects.all()
-    serializer_class = ReservationSerializer
+class PassengerViewSet(viewsets.ModelViewSet):
+    query = Passenger.objects.all()
+    serializer_class = PassengerSerializer

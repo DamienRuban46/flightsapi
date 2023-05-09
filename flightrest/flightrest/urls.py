@@ -17,6 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+
+from rest_framework import routers
+from src.views import FlightViewSet, SeatViewSet, ReservationViewSet, PassengerViewSet
+
+router = routers.DefaultRouter()
+router.register(r"flight", FlightViewSet)
+router.register(r"seat", SeatViewSet)
+router.register(r"reservation", ReservationViewSet)
+router.register(r"passenger", PassengerViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
