@@ -42,7 +42,6 @@ def query_flights(request, date, departureAirport, destinationAirport):
     
 @api_view(["POST"])
 def reserve_seat(request):
-    print(request["passenger"])
     try:
         try:
             flightId = request.data["flightId"]
@@ -51,7 +50,7 @@ def reserve_seat(request):
             return JsonResponse({"message" : "Flight ID not found"})
         try:
             seatNumber = request.data["seatNumber"]
-            seat = Seat.objects.get(flightId=flightId, seatNumber=seatNumber)
+            seat = Seat.objects.get(flightId = flightId, seatNumber = seatNumber)
             if seat["taken"]:
                 raise
             seatId = seat.seatId
@@ -83,6 +82,42 @@ def reserve_seat(request):
         response_data["flight"] = FlightSerializer(flight)
         return Response(response_data, status = 200)
 
+    except Exception as e:
+        print(e)
+        return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
+    
+@api_view(["POST"])
+def query_reservation(request, reservationId):
+    try:
+        try:
+            reservation_data = Reservation.objects.get(reservationId = reservationId)
+        except:
+            return JsonResponse({"message" : "Reservation ID not found"}, status = 404)
+        passenger_data = Passenger.objects.get(passengerId = reservation_data["passengerId"])
+        # reservation_serialised = ReservationSerializer(reservation).data
+        # passenger_data = Passenger.objects.get(passengerId = reservation_serialised["passengerId"])
+        # passenger_serialised = PassengerSerializer(passenger_data).data
+        seat_data = Seat.objects.get(seatId = reservation_data["seatId"])
+        # seat_data = Seat.objects.get(seatId = reservation_serialised["seatId"])
+        flight_data = Flight.objects.get(flightId = seat_data["flightId"])
+        response_data = {"reservationId": reservationId,
+                         "seat" : reservation_data["seatId"],
+                         "holdLuggage" : reservation_data["holdLuggage"],
+                         "paymentConfirmed" : reservation_data["paymentConfirmed"],
+                         "passenger" : {"firstName" : passenger_data["firstName"],
+                                        "lastName" : passenger_data["lastName"],
+                                        "dateOfBirth" : passenger_data["dateOfBirth"],
+                                        "passportNumber" : passenger_data["passportNumber"],
+                                        "address" : passenger_data["address"]},
+                         "flight" : {"flightId" : flight_data["flightId"],
+                                     "planeModel" : flight_data["planeModel"],
+                                     "numberOfRows" : flight_data["numberOfRows"],
+                                     "seatsPerRow" : flight_data["seatsPerRow"],
+                                     "departureTime" : flight_data["departureTime"],
+                                     "arrivalTime" : flight_data["arrivalTime"],
+                                     "departureAirport" : flight_data["departureAirport"],
+                                     "destinationAirport" : flight_data["destinationAirport"]}}
+        return Response(response_data, status = 200)
     except Exception as e:
         print(e)
         return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
