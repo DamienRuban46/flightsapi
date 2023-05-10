@@ -1,26 +1,26 @@
 from rest_framework import serializers
-from src.models import Flight, Seat, Reservation, Passenger
+from src.models import Flight, Seat, Passenger, Reservation
 
 class FlightSerializer(serializers.ModelSerializer):
     class Meta:
         model = Flight
-        fields = {"flight_id", "plane_model", "number_of_seats",
-                  "seats_per_row", "departure_time", "arrival_time",
-                  "destination", "origin"}
-        
+        fields = ("flightId", "planeModel", "numberOfRows",
+                  "seatsPerRow", "departureTime", "arrivalTime",
+                  "departureAirport", "destinationAirport",)
+
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
-        fields = {"seat_id", "seat_number",
-                  "seat_price"}
+        fields = ("seatNumber", "seatPrice",)
 
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = {"reservation", "hold_luggage", "payment_confirmed"}
+        fields = ("reservationId", "seatId", "passengerId", 
+                  "holdLuggage", "paymentConfirmed",)
 
 class PassengerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passenger
-        fields = {"passenger_id", "first_name", "last_name",
-                  "DOB", "passport_number", "address"}
+        fields = ("passengerId", "firstName", "lastName", 
+                  "dateOfBirth", "passportNumber", "address",)
