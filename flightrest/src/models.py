@@ -1,36 +1,34 @@
 from django.db import models
-import uuid
 
-# Create your models here.
 class Flight(models.Model):
-    flight_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    plane_model = models.CharField(max_length=100)
-    number_of_rows = models.IntegerField()
-    seats_per_row = models.SmallIntegerField()
-    departure_time = models.DateTimeField()
-    arrival_time = models.DateTimeField()
-    destination = models.CharField(max_length=100)
-    origin = models.CharField(max_length=100)
+    flightId = models.AutoField(primary_key=True)
+    planeModel = models.CharField(max_length=20)
+    numberOfRows = models.IntegerField()
+    seatsPerRow = models.IntegerField()
+    departureTime = models.DateTimeField()
+    arrivalTime = models.DateTimeField()
+    departureAirport = models.CharField(max_length=100)
+    destinationAirport = models.CharField(max_length=100)
 
 class Seat(models.Model):
-    seat_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    seat_number = models.IntegerField()
-    seat_price = models.FloatField()
-    booked = models.BooleanField()
+    seatId = models.AutoField(primary_key=True)
+    flightId = models.ForeignKey(Flight, on_delete=models.DO_NOTHING,)
+    seatNumber = models.IntegerField()
+    seatPrice = models.DecimalField(decimal_places=2, max_digits=10)
+    taken = models.BooleanField()
+
 
 class Passenger(models.Model):
-    passenger_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    DOB = models.DateField()
-    passport_number = models.IntegerField()
-    address = models.CharField(max_length=100)
+    passengerId = models.AutoField(primary_key=True)
+    firstName = models.CharField(max_length=100)
+    lastName = models.CharField(max_length=100)
+    dateOfBirth = models.DateField()
+    passportNumber = models.IntegerField()
+    address = models.CharField(max_length=200)
 
 class Reservation(models.Model):
-    reservation = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    seat_id = models.ForeignKey(Seat, on_delete=models.DO_NOTHING)
-    passenger_id = models.ForeignKey(Passenger, on_delete=models.DO_NOTHING)
-    hold_luggage = models.BooleanField()
-    payment_confirmed = models.BooleanField()
-
+    reservationId = models.AutoField(primary_key=True)
+    seatId = models.ForeignKey(Seat, on_delete=models.DO_NOTHING,)
+    passengerId = models.ForeignKey(Passenger, on_delete=models.DO_NOTHING,)
+    holdLuggage = models.BooleanField()
+    paymentConfirmed = models.BooleanField()
