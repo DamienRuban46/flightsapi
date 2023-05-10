@@ -122,3 +122,50 @@ def query_reservation(request, reservationId):
         print(e)
         return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
     
+@api_view(["PUT"])
+def update_reservation(request, reservationId):
+    try:
+        try:
+            reservation_data = Reservation.objects.get(reservationId = reservationId)
+        except:
+            return JsonResponse({"message" : "Reservation ID not found"}, status = 404)
+        try:
+            holdLuggage = request.data["holdLuggage"]
+            reservation_data["holdLuggage"] = holdLuggage
+            reservation_data.save()
+        except:
+            return JsonResponse({"message" : "Hold Luggage value invalid"})
+        try:
+            passenger_data = Passenger.objects.get(passengerId = request.data["passenger"])
+            for key, value in passenger_data.items():
+                passenger_data[key] = value
+            passenger_data.save()
+        except:
+            return JsonResponse({"message" : "Invalid Value"})
+        seat_data = Seat.objects.get(seatId = reservation_data["seatId"])
+        flight_data = Flight.objects.get(flightId = seat_data["flightId"])
+        response_data = {"reservationId": reservationId,
+                         "seat" : reservation_data["seatId"],
+                         "holdLuggage" : reservation_data["holdLuggage"],
+                         "paymentConfirmed" : reservation_data["paymentConfirmed"],
+                         "passenger" : {"firstName" : passenger_data["firstName"],
+                                        "lastName" : passenger_data["lastName"],
+                                        "dateOfBirth" : passenger_data["dateOfBirth"],
+                                        "passportNumber" : passenger_data["passportNumber"],
+                                        "address" : passenger_data["address"]},
+                         "flight" : {"flightId" : flight_data["flightId"],
+                                     "planeModel" : flight_data["planeModel"],
+                                     "numberOfRows" : flight_data["numberOfRows"],
+                                     "seatsPerRow" : flight_data["seatsPerRow"],
+                                     "departureTime" : flight_data["departureTime"],
+                                     "arrivalTime" : flight_data["arrivalTime"],
+                                     "departureAirport" : flight_data["departureAirport"],
+                                     "destinationAirport" : flight_data["destinationAirport"]}}
+        return Response(response_data, status = 200)
+
+    except Exception as e:
+        print(e)
+        return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
+    
+
+    
