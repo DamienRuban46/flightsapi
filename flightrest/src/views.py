@@ -175,9 +175,24 @@ def delete_reservation(request, reservationId):
             reservation_data.delete()
             return Response(status = 200)
         except:
-            return JsonResponse({"message" : "Invalid reservation ID"}, status = 404)
+            return JsonResponse({"message" : "Reservation ID not found"}, status = 404)
     except Exception as e:
         print(e)
         return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
 
-    
+@api_view
+def confirm_reservation(request, reservationId):    
+    try:
+        try:
+            reservation_data = Reservation.objects.get(reservationId = reservationId)
+        except:
+            return JsonResponse({"message" : "Reservation ID not found"}, status = 404)
+        try:
+            reservation_data["paymentConfirmed"] = True
+            reservation_data.save()
+        except:
+            return JsonResponse({"message" : "Unable to confirm payment"})
+        return Response(status = 200)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
