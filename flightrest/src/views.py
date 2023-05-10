@@ -167,5 +167,17 @@ def update_reservation(request, reservationId):
         print(e)
         return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
     
+@api_view({"DELETE"})
+def delete_reservation(request, reservationId):
+    try:
+        try:
+            reservation_data = Reservation.objects.get(reservationId = reservationId)
+            reservation_data.delete()
+            return Response(status = 200)
+        except:
+            return JsonResponse({"message" : "Invalid reservation ID"}, status = 404)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
 
     
