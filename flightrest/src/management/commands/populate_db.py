@@ -64,36 +64,36 @@ class Command(BaseCommand):
                     #Randomly select an aircraft
                     #Need to calculate distance between them
                     aircraft_index = random.randint(0,2)
-                    flight_info = {"plane_model" : self.aircraft[aircraft_index]["model"],
-                                "number_of_rows" : self.aircraft[aircraft_index]["no of rows"],
-                                "seats_per_row": self.aircraft[aircraft_index]["row width"],
-                                "origin" : journey["airport 1"],
-                                "destination" : journey["airport 2"],
-                                "departure_time" : dt,
-                                "arrival_time" : datetime.combine(dt, time(hour=journey["duration"]))}
+                    flight_info = {"planeModel" : self.aircraft[aircraft_index]["model"],
+                                "numberOfRows" : self.aircraft[aircraft_index]["no of rows"],
+                                "seatsPerRow": self.aircraft[aircraft_index]["row width"],
+                                "departureAirport" : journey["airport 1"],
+                                "destinationAirport" : journey["airport 2"],
+                                "departureTime" : dt,
+                                "arrivalTime" : datetime.combine(dt, time(hour=journey["duration"]))}
                     
                     flight = Flight.objects.create(**flight_info)
                     for seat_no in range(self.aircraft[aircraft_index]["no of seats"]):
-                        seat = {"flight_id" : flight,
-                                "seat_number" : seat_no + 1,
-                                "seat_price" : 100,
-                                "booked" : False}
+                        seat = {"flightId" : flight,
+                                "seatNumber" : seat_no + 1,
+                                "seatPrice" : 100,
+                                "taken" : False}
                         Seat.objects.create(**seat)
 
-                    flight_info = {"plane_model" : self.aircraft[aircraft_index]["model"],
-                                "number_of_rows" : self.aircraft[aircraft_index]["no of rows"],
-                                "seats_per_row": self.aircraft[aircraft_index]["row width"],
-                                "origin" : journey["airport 2"],
-                                "destination" : journey["airport 1"],
-                                "departure_time" : dt,
-                                "arrival_time" : datetime.combine(dt, time(hour=journey["duration"]))}
+                    flight_info = {"planeModel" : self.aircraft[aircraft_index]["model"],
+                                "numberOfRows" : self.aircraft[aircraft_index]["no of rows"],
+                                "seatsPerRow": self.aircraft[aircraft_index]["row width"],
+                                "departureAirport" : journey["airport 2"],
+                                "destinationAirport" : journey["airport 1"],
+                                "departureTime" : dt,
+                                "arrivalTime" : datetime.combine(dt, time(hour=journey["duration"]))}
                     
                     flight = Flight.objects.create(**flight_info)
                     for seat_no in range(self.aircraft[aircraft_index]["no of seats"]):
-                        seat = {"flight_id" : flight,
-                                "seat_number" : seat_no + 1,
-                                "seat_price" : 100,
-                                "booked" : False}
+                        seat = {"flightId" : flight,
+                                "seatNumber" : seat_no + 1,
+                                "seatPrice" : 100,
+                                "taken" : False}
                         Seat.objects.create(**seat)
 
             flight_date += timedelta(days=1)
