@@ -25,7 +25,7 @@ urlpatterns = [
     path("flights/query=<str:date>&<str:departureAirport>&<str:destinationAirport>/",
          views.query_flights),
     path("res/book/", views.reserve_seat),
-    path("res/query=<str:reservationID>", views.query_reservation),
-    path("res/update/query=<str:reservationID>", views.update_reservation),
-    path("res/delete/query=<str:reservationID>", views.delete_reservation),
-    path("res/confirm/query=<str:reservationID>", views.confirm_reservation)]
+    path("res/query=<int:reservationId>", views.query_reservation),
+    path("res/update/query=<str:reservationId>", views.update_reservation),
+    path("res/delete/query=<str:reservationId>", views.delete_reservation),
+    path("res/confirm/query=<str:reservationId>", views.confirm_reservation)]

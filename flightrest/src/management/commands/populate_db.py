@@ -1,7 +1,7 @@
 from io import StringIO
 from typing import Optional
 from django.core.management.base import BaseCommand
-from src.models import Flight, Seat
+from src.models import Flight, Seat, Passenger, Reservation
 from datetime import date, datetime, timedelta, time
 import random
 
@@ -53,10 +53,15 @@ class Command(BaseCommand):
 
 
     def add_flights(self, amount):
-        Flight.objects.all().delete()
+        Reservation.objects.all().delete()
+        Passenger.objects.all().delete()
         Seat.objects.all().delete()
+        Flight.objects.all().delete()
+       
+        
+        
         flight_date = date.today()#tz=get_current_timezone())
-        for _ in range (10):
+        for _ in range (30):
             for i in range (amount):
                 for journey in self.journeys:
                     dt = datetime.combine(flight_date, time.min)
