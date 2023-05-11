@@ -23,11 +23,9 @@ from src import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("flights/query=<str:date>&<str:departureAirport>&<str:destinationAirport>/",
-         views.query_flights),]
-    path("res/book/", views.reserve_seat)
-#     path("/res/query=<str:reservationID>",)
-#     path("/res/update/query=<str:reservationID>",)
-#     path("/res/delete/query=<str:reservationID>",)
-#     path("/res/confirm/query=<str:reservationID>",)
-
-# ]
+         views.query_flights),
+    path("res/book/", views.reserve_seat),
+    path("res/query=<str:reservationID>", views.query_reservation),
+    path("res/update/query=<str:reservationID>", views.update_reservation),
+    path("res/delete/query=<str:reservationID>", views.delete_reservation),
+    path("res/confirm/query=<str:reservationID>", views.confirm_reservation)]

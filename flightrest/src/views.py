@@ -167,7 +167,7 @@ def update_reservation(request, reservationId):
         print(e)
         return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
     
-@api_view({"DELETE"})
+@api_view(["DELETE"])
 def delete_reservation(request, reservationId):
     try:
         try:
@@ -180,7 +180,7 @@ def delete_reservation(request, reservationId):
         print(e)
         return JsonResponse({"message": "Something went wrong please try again",}, status = 500)
 
-@api_view
+@api_view(["PUT"])
 def confirm_reservation(request, reservationId):    
     try:
         try:
